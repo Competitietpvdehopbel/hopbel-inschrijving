@@ -1,10 +1,13 @@
 {
   "clubNaam": "TPV De Hopbel",
   "titel": "Inschrijven voor de zomercompetitie 2026 bij TPV De Hopbel",
-  "sluitingsdatum": "2026-04-26",
+  "sluitingsdatums": {
+    "Tennis": "2026-03-26",
+    "Padel": "2026-04-26"
+  },
   "contactEmail": "competitie@tpvdehopbel.nl",
   "sheetUrl": "https://script.google.com/macros/s/AKfycbwyWFNGncrzm84JqLJKlYsRIDQZsqr0mBawMTkdxKmT5sY6a0uQ2J3ynzP1cazB0FX8/exec",
-    "onderdelen": {
+  "onderdelen": {
     "Tennis": [
       "HD 17+ woensdagavond",
       "DD 17+ woensdagavond",
