@@ -14,12 +14,13 @@
       "GD 17+ woensdagavond"
     ],
     "Padel": [
-      "Heren vrijdagavond",
       "Dames vrijdagavond",
       "Gemengd vrijdagavond",
-      "Heren zaterdag",
       "Dames zaterdag",
+      "Gemengd zaterdag",
+      "Dames zondag",
       "Gemengd zondag"
+
     ]
   }
 }
