@@ -1,4 +1,3 @@
-
 const startScreen = document.getElementById('startScreen');
 const formScreen = document.getElementById('formScreen');
 const successScreen = document.getElementById('successScreen');
@@ -15,6 +14,7 @@ const closedMessage = document.getElementById('closedMessage');
 let config = {};
 let onderdelenPerSport = {};
 let playerCount = 3;
+let isSubmitting = false;
 
 async function laadConfig() {
     const response = await fetch('config.json?v=' + SITE_VERSION);
@@ -31,6 +31,7 @@ async function laadConfig() {
     if (!config.sluitingsdatums) {
         throw new Error('sluitingsdatums ontbreken in config.json');
     }
+
     if (!config.sheetUrl) {
         throw new Error('sheetUrl ontbreekt in config.json');
     }
@@ -41,6 +42,7 @@ async function laadConfig() {
 
     onderdelenPerSport = config.onderdelen;
 }
+
 async function init() {
     try {
         await laadConfig();
@@ -143,7 +145,6 @@ function vulSporten() {
     });
 }
 
-
 function toonGeslotenMelding(sport) {
     const datum = config.sluitingsdatums[sport];
     closedMessage.style.display = 'block';
@@ -187,22 +188,18 @@ function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-
 function isValidIBAN(iban) {
     iban = iban.replace(/\s+/g, '').toUpperCase();
 
     if (!/^[A-Z0-9]+$/.test(iban)) return false;
     if (iban.length < 15 || iban.length > 34) return false;
 
-    // Zet eerste 4 tekens achteraan
     iban = iban.slice(4) + iban.slice(0, 4);
 
-    // Letters omzetten naar cijfers
     iban = iban.replace(/[A-Z]/g, function (char) {
         return char.charCodeAt(0) - 55;
     });
 
-    // Mod 97 check
     let remainder = iban;
     while (remainder.length > 2) {
         let block = remainder.slice(0, 9);
@@ -242,6 +239,32 @@ function vulOnderdelen() {
     updateDeadlineTekst(gekozenSport);
 }
 
+function resetSubmitStatus() {
+    isSubmitting = false;
+
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Verstuur inschrijving';
+    }
+}
+
+function setSubmitStatusVerzenden() {
+    isSubmitting = true;
+
+    const submitButton = form.querySelector('button[type="submit"]');
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Bezig met verzenden...';
+    }
+}
+
+function toonFout(melding, elementVoorScroll = formError) {
+    formError.textContent = melding;
+    resetSubmitStatus();
+    scrollNaarFout(elementVoorScroll);
+}
+
 startButton.addEventListener('click', () => {
     startScreen.classList.remove('active');
     formScreen.classList.add('active');
@@ -257,10 +280,10 @@ addPlayerButton.addEventListener('click', () => {
     row.setAttribute('data-player-row', '');
     row.innerHTML = `
         <div class="field">
-		<label for="player${playerCount}">Speler ${playerCount}</label>
-		<input type="text" id="player${playerCount}" name="player${playerCount}"/>
-	</div>
-      `;
+            <label for="player${playerCount}">Speler ${playerCount}</label>
+            <input type="text" id="player${playerCount}" name="player${playerCount}"/>
+        </div>
+    `;
 
     row.appendChild(createRemoveButton(row));
     playersContainer.appendChild(row);
@@ -268,6 +291,12 @@ addPlayerButton.addEventListener('click', () => {
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
+
+    if (isSubmitting) {
+        return;
+    }
+
+    setSubmitStatusVerzenden();
     formError.textContent = '';
 
     const captainName = document.getElementById('captainName').value.trim();
@@ -284,81 +313,83 @@ form.addEventListener('submit', async (event) => {
 
     const agreeRules = document.getElementById('agreeRules').checked;
     const agreePayment = document.getElementById('agreePayment').checked;
+    const captainEmailField = document.getElementById('captainEmail');
+    const ibanField = document.getElementById('iban');
+
+    captainEmailField.style.border = '';
+    ibanField.style.border = '';
 
     if (!captainName) {
-        formError.textContent = 'Vul de naam van de captain in.';
-        scrollNaarFout(formError);
+        toonFout('Vul de naam van de captain in.');
         return;
     }
 
     if (!captainEmail) {
-        formError.textContent = 'Vul het e-mailadres van de captain in.';
-        scrollNaarFout(formError);
+        toonFout('Vul het e-mailadres van de captain in.');
         return;
     }
 
     if (!isValidEmail(captainEmail)) {
-        formError.textContent = 'Vul een geldig e-mailadres in.';
-        document.getElementById('captainEmail').style.border = '2px solid red';
-        scrollNaarFout(formError);
+        captainEmailField.style.border = '2px solid red';
+        toonFout('Vul een geldig e-mailadres in.', captainEmailField);
         return;
     }
+
     if (!iban) {
-        formError.textContent = 'Vul het IBAN nummer in.';
-        scrollNaarFout(formError);
+        toonFout('Vul het IBAN nummer in.', ibanField);
         return;
     }
 
     if (!isValidIBAN(iban)) {
-        formError.textContent = 'Het IBAN nummer lijkt niet te kloppen.';
+        ibanField.style.border = '2px solid red';
+        toonFout('Het IBAN nummer lijkt niet te kloppen.', ibanField);
         return;
     }
 
     if (!iban.startsWith('NL')) {
-        formError.textContent = 'Alleen Nederlandse IBAN nummers zijn toegestaan.';
+        ibanField.style.border = '2px solid red';
+        toonFout('Alleen Nederlandse IBAN nummers zijn toegestaan.', ibanField);
         return;
     }
 
     if (iban.length !== 18) {
-        formError.textContent = 'Een Nederlands IBAN nummer moet 18 tekens hebben.';
+        ibanField.style.border = '2px solid red';
+        toonFout('Een Nederlands IBAN nummer moet 18 tekens hebben.', ibanField);
         return;
     }
+
     if (!ibanName) {
-        formError.textContent = 'Vul de tenaamstelling van de bankrekening in.';
-        scrollNaarFout(formError);
+        toonFout('Vul de tenaamstelling van de bankrekening in.');
         return;
     }
 
     if (!sportType) {
-        formError.textContent = 'Kies eerst Tennis of Padel.';
+        toonFout('Kies eerst Tennis of Padel.');
         return;
     }
 
     if (isSportGesloten(sportType)) {
-        formError.textContent = `De inschrijving voor ${sportType} is gesloten.`;
+        toonFout(`De inschrijving voor ${sportType} is gesloten.`);
         return;
     }
 
     if (!onderdeel) {
-        formError.textContent = 'Kies daarna een onderdeel.';
+        toonFout('Kies daarna een onderdeel.');
         return;
     }
 
     if (players.length < 3) {
-        formError.textContent = 'Voer minimaal 3 spelers in.';
-        scrollNaarFout(formError);
+        toonFout('Voer minimaal 3 spelers in.');
         return;
     }
 
     if (!agreeRules) {
-        formError.textContent = 'Je moet akkoord gaan met de reglementen.';
-        scrollNaarFout(formError);
+        toonFout('Je moet akkoord gaan met de reglementen.');
         return;
     }
 
     if (!agreePayment) {
-        formError.textContent = 'Je moet akkoord gaan met de betalingsvoorwaarde.';
-        formError.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        toonFout('Je moet akkoord gaan met de betalingsvoorwaarde.');
         return;
     }
 
@@ -386,16 +417,16 @@ form.addEventListener('submit', async (event) => {
         }
 
         summary.innerHTML = `
-      <p><strong>Captain:</strong> ${captainName}</p>
-      <p><strong>E-mail:</strong> ${captainEmail}</p>
-      <p><strong>IBAN:</strong> ${iban}</p>
-      <p><strong>Tenaamstelling:</strong> ${ibanName}</p>
-      <p><strong>Sport:</strong> ${sportType}</p>
-      <p><strong>Onderdeel:</strong> ${onderdeel}</p>
-      <p><strong>Spelers:</strong> ${players.join(', ')}</p>
-      <p><strong>Reglementen akkoord:</strong> Ja</p>
-      <p><strong>Betaling akkoord:</strong> Ja</p>
-    `;
+            <p><strong>Captain:</strong> ${captainName}</p>
+            <p><strong>E-mail:</strong> ${captainEmail}</p>
+            <p><strong>IBAN:</strong> ${iban}</p>
+            <p><strong>Tenaamstelling:</strong> ${ibanName}</p>
+            <p><strong>Sport:</strong> ${sportType}</p>
+            <p><strong>Onderdeel:</strong> ${onderdeel}</p>
+            <p><strong>Spelers:</strong> ${players.join(', ')}</p>
+            <p><strong>Reglementen akkoord:</strong> Ja</p>
+            <p><strong>Betaling akkoord:</strong> Ja</p>
+        `;
 
         formScreen.classList.remove('active');
         successScreen.classList.add('active');
@@ -408,8 +439,12 @@ form.addEventListener('submit', async (event) => {
     } catch (error) {
         formError.textContent = 'Er ging iets mis bij het verzenden.';
         console.error(error);
+        resetSubmitStatus();
+        scrollNaarFout(formError);
+        return;
     }
-});
 
+    resetSubmitStatus();
+});
 
 init();
