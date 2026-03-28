@@ -1,3 +1,4 @@
+// DOM-elementen ophalen die in het script worden gebruikt.
 const startScreen = document.getElementById('startScreen');
 const formScreen = document.getElementById('formScreen');
 const successScreen = document.getElementById('successScreen');
@@ -11,11 +12,13 @@ const sportTypeSelect = document.getElementById('sportType');
 const onderdeelSelect = document.getElementById('onderdeel');
 const closedMessage = document.getElementById('closedMessage');
 
+// Algemene state voor configuratie en formulierstatus.
 let config = {};
 let onderdelenPerSport = {};
 let playerCount = 3;
 let isSubmitting = false;
 
+// Laadt de configuratie uit config.json en controleert verplichte velden.
 async function laadConfig() {
     const response = await fetch('config.json?v=' + SITE_VERSION);
     if (!response.ok) {
@@ -43,6 +46,7 @@ async function laadConfig() {
     onderdelenPerSport = config.onderdelen;
 }
 
+// Initialiseert de pagina met configuratie, sporten en sluitingscontrole.
 async function init() {
     try {
         await laadConfig();
@@ -55,6 +59,7 @@ async function init() {
     }
 }
 
+// Formatteert een ISO-datum naar een Nederlandse leesbare datum.
 function formatteerDatum(isoDatum) {
     const datum = new Date(isoDatum);
     return datum.toLocaleDateString('nl-NL', {
@@ -64,6 +69,7 @@ function formatteerDatum(isoDatum) {
     });
 }
 
+// Past configuratiegegevens zoals titel, clubnaam en contactgegevens toe op de pagina.
 function pasConfigToeOpPagina() {
     document.title = config.titel;
 
@@ -94,6 +100,7 @@ function pasConfigToeOpPagina() {
     }
 }
 
+// Controleert of alle sporten gesloten zijn en toont dan een algemene melding.
 function controleerOfAllesGeslotenIs() {
     const sporten = Object.keys(config.onderdelen);
     const allesGesloten = sporten.every((sport) => isSportGesloten(sport));
@@ -110,6 +117,7 @@ function controleerOfAllesGeslotenIs() {
     }
 }
 
+// Controleert of de sluitingsdatum van een sport is verstreken.
 function isSportGesloten(sport) {
     if (!sport || !config.sluitingsdatums || !config.sluitingsdatums[sport]) {
         return false;
@@ -122,6 +130,7 @@ function isSportGesloten(sport) {
     return nu > sluitingsDatum;
 }
 
+// Vult de keuzelijst met sporten op basis van de configuratie.
 function vulSporten() {
     sportTypeSelect.innerHTML = '';
 
@@ -145,76 +154,7 @@ function vulSporten() {
     });
 }
 
-function toonGeslotenMelding(sport) {
-    const datum = config.sluitingsdatums[sport];
-    closedMessage.style.display = 'block';
-    closedMessage.innerHTML = `
-        <strong>Inschrijving gesloten</strong><br>
-        De inschrijving voor <strong>${sport}</strong> is gesloten sinds
-        ${formatteerDatum(datum)}.
-        Voor vragen kun je mailen naar <span class="contactEmail">${config.contactEmail}</span>.
-    `;
-}
-
-function verbergGeslotenMelding() {
-    closedMessage.style.display = 'none';
-}
-
-function updateDeadlineTekst(sport) {
-    const deadlineElement = document.getElementById('inschrijfDeadlineTekst');
-    if (!deadlineElement) return;
-
-    if (!sport || !config.sluitingsdatums[sport]) {
-        deadlineElement.textContent = 'Kies een sport om de sluitingsdatum te zien.';
-        return;
-    }
-
-    deadlineElement.textContent =
-        `${sport}: inschrijven kan t/m ${formatteerDatum(config.sluitingsdatums[sport])}.`;
-}
-
-function createRemoveButton(row) {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'remove-player';
-    button.textContent = 'Verwijderen';
-    button.addEventListener('click', () => {
-        row.remove();
-    });
-    return button;
-}
-
-function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function isValidIBAN(iban) {
-    iban = iban.replace(/\s+/g, '').toUpperCase();
-
-    if (!/^[A-Z0-9]+$/.test(iban)) return false;
-    if (iban.length < 15 || iban.length > 34) return false;
-
-    iban = iban.slice(4) + iban.slice(0, 4);
-
-    iban = iban.replace(/[A-Z]/g, function (char) {
-        return char.charCodeAt(0) - 55;
-    });
-
-    let remainder = iban;
-    while (remainder.length > 2) {
-        let block = remainder.slice(0, 9);
-        remainder = (parseInt(block, 10) % 97) + remainder.slice(block.length);
-    }
-
-    return parseInt(remainder, 10) % 97 === 1;
-}
-
-function scrollNaarFout(element) {
-    const yOffset = -120;
-    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-    window.scrollTo({ top: y, behavior: 'smooth' });
-}
-
+// Vult de onderdelen op basis van de gekozen sport.
 function vulOnderdelen() {
     const gekozenSport = sportTypeSelect.value;
     const opties = onderdelenPerSport[gekozenSport] || [];
@@ -239,6 +179,84 @@ function vulOnderdelen() {
     updateDeadlineTekst(gekozenSport);
 }
 
+// Toont een melding dat inschrijving voor een specifieke sport gesloten is.
+function toonGeslotenMelding(sport) {
+    const datum = config.sluitingsdatums[sport];
+    closedMessage.style.display = 'block';
+    closedMessage.innerHTML = `
+        <strong>Inschrijving gesloten</strong><br>
+        De inschrijving voor <strong>${sport}</strong> is gesloten sinds
+        ${formatteerDatum(datum)}.
+        Voor vragen kun je mailen naar <span class="contactEmail">${config.contactEmail}</span>.
+    `;
+}
+
+// Verbergt de melding dat een sport of inschrijving gesloten is.
+function verbergGeslotenMelding() {
+    closedMessage.style.display = 'none';
+}
+
+// Toont de juiste sluitingsdatum voor de gekozen sport.
+function updateDeadlineTekst(sport) {
+    const deadlineElement = document.getElementById('inschrijfDeadlineTekst');
+    if (!deadlineElement) return;
+
+    if (!sport || !config.sluitingsdatums[sport]) {
+        deadlineElement.textContent = 'Kies een sport om de sluitingsdatum te zien.';
+        return;
+    }
+
+    deadlineElement.textContent =
+        `${sport}: inschrijven kan t/m ${formatteerDatum(config.sluitingsdatums[sport])}.`;
+}
+
+// Maakt een verwijderknop voor een extra spelerregel.
+function createRemoveButton(row) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'remove-player';
+    button.textContent = 'Verwijderen';
+    button.addEventListener('click', () => {
+        row.remove();
+    });
+    return button;
+}
+
+// Controleert of een e-mailadres een geldig formaat heeft.
+function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// Controleert of een IBAN technisch geldig is op basis van de IBAN-check.
+function isValidIBAN(iban) {
+    iban = iban.replace(/\s+/g, '').toUpperCase();
+
+    if (!/^[A-Z0-9]+$/.test(iban)) return false;
+    if (iban.length < 15 || iban.length > 34) return false;
+
+    iban = iban.slice(4) + iban.slice(0, 4);
+
+    iban = iban.replace(/[A-Z]/g, function (char) {
+        return char.charCodeAt(0) - 55;
+    });
+
+    let remainder = iban;
+    while (remainder.length > 2) {
+        let block = remainder.slice(0, 9);
+        remainder = (parseInt(block, 10) % 97) + remainder.slice(block.length);
+    }
+
+    return parseInt(remainder, 10) % 97 === 1;
+}
+
+// Scrollt de pagina vloeiend naar het veld of element met een fout.
+function scrollNaarFout(element) {
+    const yOffset = -120;
+    const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+}
+
+// Zet de submitstatus terug naar normaal na een fout of succesvolle verwerking.
 function resetSubmitStatus() {
     isSubmitting = false;
 
@@ -249,6 +267,7 @@ function resetSubmitStatus() {
     }
 }
 
+// Zet de submitknop tijdelijk vast tijdens het verzenden.
 function setSubmitStatusVerzenden() {
     isSubmitting = true;
 
@@ -259,19 +278,23 @@ function setSubmitStatusVerzenden() {
     }
 }
 
+// Toont een foutmelding en scrollt naar het relevante foutpunt.
 function toonFout(melding, elementVoorScroll = formError) {
     formError.textContent = melding;
     resetSubmitStatus();
     scrollNaarFout(elementVoorScroll);
 }
 
+// Opent het formulier vanuit het startscherm.
 startButton.addEventListener('click', () => {
     startScreen.classList.remove('active');
     formScreen.classList.add('active');
 });
 
+// Werkt de onderdelenlijst bij zodra een sport wordt gekozen.
 sportTypeSelect.addEventListener('change', vulOnderdelen);
 
+// Voegt een extra spelerregel toe aan het formulier.
 addPlayerButton.addEventListener('click', () => {
     playerCount += 1;
 
@@ -289,6 +312,7 @@ addPlayerButton.addEventListener('click', () => {
     playersContainer.appendChild(row);
 });
 
+// Verwerkt de formulierinzending inclusief validatie en verzending.
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -447,4 +471,5 @@ form.addEventListener('submit', async (event) => {
     resetSubmitStatus();
 });
 
+// Start de initialisatie van de pagina zodra het script geladen is.
 init();
