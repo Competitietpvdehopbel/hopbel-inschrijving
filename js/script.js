@@ -17,7 +17,7 @@ let onderdelenPerSport = {};
 let playerCount = 3;
 
 async function laadConfig() {
-    const response = await fetch('config.json');
+    const response = await fetch('config.json?v=' + SITE_VERSION);
     if (!response.ok) {
         throw new Error('config.json kon niet worden geladen');
     }
@@ -85,7 +85,8 @@ function pasConfigToeOpPagina() {
         }
 
         const deadlines = Object.entries(config.sluitingsdatums).map(([sport, datum]) => {
-            return `Voor ${sport} kun je inschrijven t/m ${formatteerDatum(datum)}.`;        });
+            return `Voor ${sport} kun je inschrijven t/m ${formatteerDatum(datum)}.`;
+        });
 
         deadlineElement.innerHTML = deadlines.join('<br>');
     }
@@ -286,25 +287,25 @@ form.addEventListener('submit', async (event) => {
 
     if (!captainName) {
         formError.textContent = 'Vul de naam van de captain in.';
-        scrollNaarFout(formError); 
+        scrollNaarFout(formError);
         return;
     }
 
     if (!captainEmail) {
         formError.textContent = 'Vul het e-mailadres van de captain in.';
-        scrollNaarFout(formError); 
+        scrollNaarFout(formError);
         return;
     }
 
     if (!isValidEmail(captainEmail)) {
         formError.textContent = 'Vul een geldig e-mailadres in.';
         document.getElementById('captainEmail').style.border = '2px solid red';
-        scrollNaarFout(formError); 
+        scrollNaarFout(formError);
         return;
     }
     if (!iban) {
         formError.textContent = 'Vul het IBAN nummer in.';
-        scrollNaarFout(formError); 
+        scrollNaarFout(formError);
         return;
     }
 
@@ -324,7 +325,7 @@ form.addEventListener('submit', async (event) => {
     }
     if (!ibanName) {
         formError.textContent = 'Vul de tenaamstelling van de bankrekening in.';
-        scrollNaarFout(formError); 
+        scrollNaarFout(formError);
         return;
     }
 
@@ -345,13 +346,13 @@ form.addEventListener('submit', async (event) => {
 
     if (players.length < 3) {
         formError.textContent = 'Voer minimaal 3 spelers in.';
-        scrollNaarFout(formError); 
+        scrollNaarFout(formError);
         return;
     }
 
     if (!agreeRules) {
         formError.textContent = 'Je moet akkoord gaan met de reglementen.';
-        scrollNaarFout(formError); 
+        scrollNaarFout(formError);
         return;
     }
 

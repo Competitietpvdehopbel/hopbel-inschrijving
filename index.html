@@ -5,7 +5,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ik wil me inschrijven...</title>
-  <link rel="stylesheet" href="css/style.css">
+  <script>
+    const SITE_VERSION = '2026.Z.1';
+
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = 'css/style.css?v=' + SITE_VERSION;
+    document.head.appendChild(css);
+  </script>
 </head>
 
 <body>
@@ -121,7 +128,16 @@
     </div>
   </div>
 
-  <script src="js/script.js"></script>
+  <script>
+    const script = document.createElement('script');
+    script.src = 'js/script.js?v=' + SITE_VERSION;
+    document.body.appendChild(script);
+
+    const versieDiv = document.createElement('div');
+    versieDiv.style = 'position:fixed;bottom:5px;right:10px;font-size:11px;color:#999;';
+    versieDiv.textContent = 'versie ' + SITE_VERSION;
+    document.body.appendChild(versieDiv);
+  </script>
 </body>
 
 </html>
