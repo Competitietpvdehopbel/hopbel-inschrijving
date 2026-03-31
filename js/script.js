@@ -86,14 +86,23 @@ function pasConfigToeOpPagina() {
     });
 
     const deadlineElement = document.getElementById('inschrijfDeadlineTekst');
+
     if (deadlineElement) {
         if (!config.sluitingsdatums) {
             deadlineElement.textContent = '';
             return;
         }
 
+        const vandaag = new Date();
+
         const deadlines = Object.entries(config.sluitingsdatums).map(([sport, datum]) => {
-            return `Voor ${sport} kun je inschrijven t/m ${formatteerDatum(datum)}.`;
+            const sluitDatum = new Date(datum);
+
+            if (sluitDatum < vandaag.setHours(0, 0, 0, 0)) {
+                return `Inschrijving voor ${sport} is gesloten.`;
+            } else {
+                return `Inschrijving voor ${sport} is mogelijk t/m ${formatteerDatum(datum)}.`;
+            }
         });
 
         deadlineElement.innerHTML = deadlines.join('<br>');
