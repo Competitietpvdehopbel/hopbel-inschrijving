@@ -15,12 +15,11 @@
     ],
     "Padel": [
       "Dames vrijdagavond",
-      "Gemengd vrijdagavond",
       "Dames zaterdag",
-      "Gemengd zaterdag",
       "Dames zondag",
+      "Gemengd vrijdagavond",
+      "Gemengd zaterdag",
       "Gemengd zondag"
-
     ]
   }
 }
