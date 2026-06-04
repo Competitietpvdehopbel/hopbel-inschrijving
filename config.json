@@ -9,6 +9,43 @@
   "sheetUrl": "https://script.google.com/macros/s/AKfycbwyWFNGncrzm84JqLJKlYsRIDQZsqr0mBawMTkdxKmT5sY6a0uQ2J3ynzP1cazB0FX8/exec",
   "onderdelen": {
     "Tennis": [
+      "Vrijdag Heren Dubbel 50+ Middag (4HD)",
+      "Vrijdag Heren Dubbel 17+ Avond (4HD)",
+      "Vrijdag Heren Dubbel 35+ Avond (4HD)",
+      "Vrijdag Dames Dubbel 50+ Middag (4DD)",
+      "Vrijdag Dames Dubbel 17+ Avond (4HD)",
+      "Vrijdag Dames Dubbel 35+ Avond (4HD)",
+      "Vrijdag Gemengd Dubbel 17+ Avond (4HD)",
+      "Vrijdag Gemengd Dubbel 35+ Avond (4HD)",
+      "Vrijdag Gemengd Dubbel 50+ Middag (DD-HD-2GD)",
+      "Zaterdag Dames 17+ (4DE-2DD)",
+      "Zaterdag Dames 17+ (2DE-3DD",
+      "Zaterdag Dames Dubbel 17+ (4DD)",
+      "Zaterdag Dames Dubbel 35+ (4DD)",
+      "Zaterdag Heren Dubbel 17+ (4HD)",
+      "Zaterdag Heren 17+ (4HE-2HD)",
+      "Zaterdag Heren 17+ (2HE-3HD)",
+      "Zaterdag Heren Dubbel 50+ (4HD)",
+      "Zaterdag Gemengd Dubbel 17+ (DD-HD-2GD)",
+      "Zaterdag Gemengd Dubbel 35+ (DD-HD-2GD)",
+      "Zaterdag Gemengd 17+ (DE-HE-GD-DD-HD)"
+    ],
+    "Padel": [
+      "Vrijdagavond",
+      "Vrijdagavond Dames",
+      "Zaterdag Gemengd",
+      "Zaterdag Dames",
+      "Zaterdag Heren",
+      "Zondag Gemengd",
+      "Zondag Dames",
+      "Zondag Heren",
+      "Zondag Jeugd"
+    ]
+  },
+  "Mogelijke tennisonderdelen": {
+    "Voorjaar": [
+      "..."    ],
+    "Najaar": [
       "Dinsdag Dames Dubbel Ochtend (4DD)",
       "Donderdag Dames Dubbel Middag (4DD)",
       "Donderdag Dames Dubbel Ochtend 4DD)",
@@ -41,24 +78,6 @@
       "Zondag Heren Dubbel (4HD)",
       "Zondag Heren (4HE-2HD)",
       "Zondag Gemengd Dubbel (DD-HD-2GD)"
-    ],
-    "Padel": [
-      "Vrijdagavond",
-      "Vrijdagavond Dames",
-      "Zaterdag Gemengd",
-      "Zaterdag Dames",
-      "Zaterdag Heren",
-      "Zondag Gemengd",
-      "Zondag Dames",
-      "Zondag Heren",
-      "Zondag Jeugd"
-    ]
-  },
-  "Mogelijke tennisonderdelen": {
-    "Voorjaar": [
-      "..."    ],
-    "Najaar": [
-      "..."
     ],
     "Zomer": [
       "..."
