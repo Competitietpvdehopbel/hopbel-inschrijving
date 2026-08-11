@@ -1,6 +1,7 @@
 {
   "clubNaam": "TPV De Hopbel",
   "titel": "Inschrijven voor de wintercompetitie 2026/2027 bij TPV De Hopbel",
+  "Website": "https://competitietpvdehopbel.github.io/hopbel-inschrijving/",
   "sluitingsdatums": {
     "Tennis": "2026-09-19",
     "Padel": "2026-09-19"
@@ -10,8 +11,6 @@
   "onderdelen": {
     "Tennis": [
       "Donderdag Dames Dubbel Ochtend 4DD)",
-      "Donderdag Dames Dubbel 17+ Avond (4DD)",
-      "Donderdag Gemengd Dubbel 17+ Avond (DD-HD-2GD)",
       "Vrijdag Heren Dubbel 50+ Middag (4HD)",
       "Vrijdag Gemengd Dubbel 50+ Middag (DD-HD-2GD)",
       "Vrijdag Heren Dubbel 17+ Avond (4HD)",
@@ -19,17 +18,7 @@
       "Vrijdag Dames Dubbel 17+ Avond (4HD)",
       "Vrijdag Dames Dubbel 35+ Avond (4HD)",
       "Vrijdag Gemengd Dubbel 17+ Avond (DD-HD-2GD)",
-      "Vrijdag Gemengd Dubbel 35+ Avond (DD-HD-2GD)",
-      "Zaterdag Heren Dubbel 17+ (4HD)",
-      "Zaterdag Dames Dubbel 17+ (4DD)",
-      "Zaterdag Gemengd Dubbel 17+ (DD-HD-2GD)",
-      "Zaterdag Heren 17+ (4HE-2HD)",
-      "Zaterdag Gemengd 17+ (DE-HE-GD-DD-HD)",
-      "Zaterdag Dames 17+ (4DE-2DD)",
-      "Zondag Dames (4DE-2DD)",
-      "Zondag Dames Dubbel (4DD)",
-      "Zondag Heren Dubbel (4HD)",
-      "Zondag Heren (4HE-2HD)"
+      "Vrijdag Gemengd Dubbel 35+ Avond (DD-HD-2GD)"
     ],
     "Padel": [
       "Vrijdagavond",
