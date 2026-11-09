@@ -68,49 +68,8 @@
   <div class="wrapper">
     <div class="card">
       <div class="club">TPV De Hopbel</div>
-      <h1>Reglement KNLTB competitie bij TPV De Hopbel</h1>
-
-      <h2>Inschrijving</h2>
-      <ol>
-        <li>Een team moet uit tenminste 4 deelnemers bestaan.</li>
-        <li>Inschrijving betekent: verplichting tot betaling, deelname en bardienst.</li>
-        <li>
-          De competitiebijdrage bedraagt €90 (bij 5 wedstrijden) of €115 (bij 7 wedstrijden)
-          en wordt op de eerste captainsavond per pin voldaan.
-        </li>
-        <li>
-          Elk team is verplicht een of meerdere bardiensten in te vullen, afhankelijk van
-          het aantal deelnemende teams.
-        </li>
-      </ol>
-
-      <h2>Loting</h2>
-      <ol>
-        <li>Bij overschrijving van het aantal mogelijke deelnames vindt loting plaats.</li>
-        <li>
-          Een team dat uitgeloot wordt in voor- of najaar heeft recht om in de eerstvolgende voorjaar- of
-          najaarcompetitie direct ingeloot te worden.
-          Voorwaarde is dat het team in die volgende ronde voor minimaal 60% uit dezelfde
-          spelers bestaat.
-        </li>
-      </ol>
-
-      <h2>Na inschrijven</h2>
-      <ol>
-        <li>
-          Verplaatsen van wedstrijden altijd in overleg met competitieleiding en
-          tegenstander. Een eventuele bardienst dient wel ingevuld te worden. Op de inhaaldag dien je zelf de bardienst te verzorgen.
-        </li>
-        <li>Terugtrekking kan leiden tot een boete van de KNLTB.</li>
-        <li>
-          Boetes zijn voor rekening van het team. Alle teamleden zijn verantwoordelijk
-          voor eventuele boetes van het team.
-        </li>
-        <li>
-          Een competitieteam verplicht zich tot het opvolgen van de richtlijnen opgesteld
-          door de KNLTB en aanvullend TPV De Hopbel.
-        </li>
-      </ol>
+      <!-- De tekst van het reglement staat in reglement.txt -->
+      <div id="reglement">Reglement wordt geladen...</div>
 
       <div class="footer">
         Voor vragen kun je contact opnemen via
@@ -118,5 +77,68 @@
       </div>
     </div>
   </div>
+
+  <script>
+    // Zet reglement.txt om naar HTML.
+    //   # Titel       -> hoofdtitel
+    //   ## Kopje      -> kopje
+    //   - Regel       -> genummerde regel
+    //   **tekst**     -> vetgedrukt
+    //   overige tekst -> gewone alinea
+    function escapeHtml(tekst) {
+      return tekst.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function opmaak(tekst) {
+      return escapeHtml(tekst).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    }
+
+    function zetOmNaarHtml(tekst) {
+      let html = '';
+      let inLijst = false;
+
+      for (const ruweRegel of tekst.split(/\r?\n/)) {
+        const regel = ruweRegel.trim();
+        const isLijstRegel = regel.startsWith('- ');
+
+        if (inLijst && !isLijstRegel) {
+          html += '</ol>';
+          inLijst = false;
+        }
+
+        if (!regel) continue;
+
+        if (regel.startsWith('## ')) {
+          html += `<h2>${opmaak(regel.slice(3))}</h2>`;
+        } else if (regel.startsWith('# ')) {
+          html += `<h1>${opmaak(regel.slice(2))}</h1>`;
+        } else if (isLijstRegel) {
+          if (!inLijst) {
+            html += '<ol>';
+            inLijst = true;
+          }
+          html += `<li>${opmaak(regel.slice(2))}</li>`;
+        } else {
+          html += `<p>${opmaak(regel)}</p>`;
+        }
+      }
+
+      if (inLijst) html += '</ol>';
+      return html;
+    }
+
+    fetch('reglement.txt', { cache: 'no-cache' })
+      .then((response) => {
+        if (!response.ok) throw new Error('reglement.txt niet gevonden');
+        return response.text();
+      })
+      .then((tekst) => {
+        document.getElementById('reglement').innerHTML = zetOmNaarHtml(tekst);
+      })
+      .catch(() => {
+        document.getElementById('reglement').textContent =
+          'Het reglement kon niet worden geladen. Neem contact op via competitie@tpvdehopbel.nl.';
+      });
+  </script>
 </body>
 </html>
