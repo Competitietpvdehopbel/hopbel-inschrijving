@@ -1,6 +1,6 @@
 {
   "clubNaam": "TPV De Hopbel",
-  "titel": "Inschrijven voor de voorjaarscompetitie 2026 bij TPV De Hopbel",
+  "titel": "Inschrijven voor de voorjaarscompetitie 2027 bij TPV De Hopbel",
   "Website": "https://competitietpvdehopbel.github.io/hopbel-inschrijving/",
   "sluitingsdatums": {
     "Tennis": "2027-01-06",
@@ -10,13 +10,13 @@
   "sheetUrl": "https://script.google.com/macros/s/AKfycbwyWFNGncrzm84JqLJKlYsRIDQZsqr0mBawMTkdxKmT5sY6a0uQ2J3ynzP1cazB0FX8/exec",
   "onderdelen": {
     "Tennis": [
-      "Donderdag Dames Dubbel Ochtend 4DD)",
+      "Donderdag Dames Dubbel Ochtend (4DD)",
       "Vrijdag Heren Dubbel 50+ Middag (4HD)",
       "Vrijdag Gemengd Dubbel 50+ Middag (DD-HD-2GD)",
       "Vrijdag Heren Dubbel 17+ Avond (4HD)",
       "Vrijdag Heren Dubbel 35+ Avond (4HD)",
-      "Vrijdag Dames Dubbel 17+ Avond (4HD)",
-      "Vrijdag Dames Dubbel 35+ Avond (4HD)",
+      "Vrijdag Dames Dubbel 17+ Avond (4DD)",
+      "Vrijdag Dames Dubbel 35+ Avond (4DD)",
       "Vrijdag Gemengd Dubbel 17+ Avond (DD-HD-2GD)",
       "Vrijdag Gemengd Dubbel 35+ Avond (DD-HD-2GD)",
       "Zaterdag Heren 17+ (2HE-3HD)"
@@ -39,7 +39,7 @@
     [
       "Dinsdag Dames Dubbel Ochtend (4DD)",
       "Donderdag Heren Dubbel 50+ Ochtend (4HD)",
-      "Donderdag Dames Dubbel Ochtend 4DD)",
+      "Donderdag Dames Dubbel Ochtend (4DD)",
       "Donderdag Heren Dubbel 17+ Avond (4HD)",
       "Donderdag Dames Dubbel 17+ Avond (4DD)",
       "Vrijdag Heren Dubbel 50+ Middag (4HD)",
@@ -47,8 +47,8 @@
       "Vrijdag Gemengd Dubbel 50+ Middag (DD-HD-2GD)",
       "Vrijdag Heren Dubbel 17+ Avond (4HD)",
       "Vrijdag Heren Dubbel 35+ Avond (4HD)",
-      "Vrijdag Dames Dubbel 17+ Avond (4HD)",
-      "Vrijdag Dames Dubbel 35+ Avond (4HD)",
+      "Vrijdag Dames Dubbel 17+ Avond (4DD)",
+      "Vrijdag Dames Dubbel 35+ Avond (4DD)",
       "Vrijdag Gemengd Dubbel 17+ Avond (DD-HD-2GD)",
       "Vrijdag Gemengd Dubbel 35+ Avond (DD-HD-2GD)",
       "Zaterdag Heren Dubbel 17+ (4HD)",
@@ -74,7 +74,7 @@
     [
       "Dinsdag Dames Dubbel Ochtend (4DD)",
       "Donderdag Dames Dubbel Middag (4DD)",
-      "Donderdag Dames Dubbel Ochtend 4DD)",
+      "Donderdag Dames Dubbel Ochtend (4DD)",
       "Donderdag Gemengd Dubbel 17+ Avond (4HD)",
       "Donderdag Heren Dubbel 50+ Ochtend (4HD)",
       "Donderdag Heren Dubbel 17+ Avond (4HD)",
@@ -83,8 +83,8 @@
       "Vrijdag Heren Dubbel 17+ Avond (4HD)",
       "Vrijdag Heren Dubbel 35+ Avond (4HD)",
       "Vrijdag Dames Dubbel 50+ Middag (4DD)",
-      "Vrijdag Dames Dubbel 17+ Avond (4HD)",
-      "Vrijdag Dames Dubbel 35+ Avond (4HD)",
+      "Vrijdag Dames Dubbel 17+ Avond (4DD)",
+      "Vrijdag Dames Dubbel 35+ Avond (4DD)",
       "Vrijdag Gemengd Dubbel 17+ Avond (DD-HD-2GD)",
       "Vrijdag Gemengd Dubbel 35+ Avond (DD-HD-2GD)",
       "Vrijdag Gemengd Dubbel 50+ Middag (DD-HD-2GD)",
@@ -111,15 +111,15 @@
     ],
     "Winter": 
     [
-      "Donderdag Dames Dubbel Ochtend 4DD)",
+      "Donderdag Dames Dubbel Ochtend (4DD)",
       "Donderdag Dames Dubbel 17+ Avond (4DD)",
       "Donderdag Gemengd Dubbel 17+ Avond (DD-HD-2GD)",
       "Vrijdag Heren Dubbel 50+ Middag (4HD)",
       "Vrijdag Gemengd Dubbel 50+ Middag (DD-HD-2GD)",
       "Vrijdag Heren Dubbel 17+ Avond (4HD)",
       "Vrijdag Heren Dubbel 35+ Avond (4HD)",
-      "Vrijdag Dames Dubbel 17+ Avond (4HD)",
-      "Vrijdag Dames Dubbel 35+ Avond (4HD)",
+      "Vrijdag Dames Dubbel 17+ Avond (4DD)",
+      "Vrijdag Dames Dubbel 35+ Avond (4DD)",
       "Vrijdag Gemengd Dubbel 17+ Avond (DD-HD-2GD)",
       "Vrijdag Gemengd Dubbel 35+ Avond (DD-HD-2GD)",
       "Zaterdag Heren Dubbel 17+ (4HD)",
