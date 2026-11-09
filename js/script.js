@@ -236,28 +236,6 @@ function isValidEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-// Controleert of een IBAN technisch geldig is op basis van de IBAN-check.
-function isValidIBAN(iban) {
-    iban = iban.replace(/\s+/g, '').toUpperCase();
-
-    if (!/^[A-Z0-9]+$/.test(iban)) return false;
-    if (iban.length < 15 || iban.length > 34) return false;
-
-    iban = iban.slice(4) + iban.slice(0, 4);
-
-    iban = iban.replace(/[A-Z]/g, function (char) {
-        return char.charCodeAt(0) - 55;
-    });
-
-    let remainder = iban;
-    while (remainder.length > 2) {
-        let block = remainder.slice(0, 9);
-        remainder = (parseInt(block, 10) % 97) + remainder.slice(block.length);
-    }
-
-    return parseInt(remainder, 10) % 97 === 1;
-}
-
 // Scrollt de pagina vloeiend naar het veld of element met een fout.
 function scrollNaarFout(element) {
     const yOffset = -120;
@@ -334,8 +312,6 @@ form.addEventListener('submit', async (event) => {
 
     const captainName = document.getElementById('captainName').value.trim();
     const captainEmail = document.getElementById('captainEmail').value.trim();
-    const iban = document.getElementById('iban').value.replace(/\s+/g, '').toUpperCase();
-    const ibanName = document.getElementById('ibanName').value.trim();
     const sportType = sportTypeSelect.value.trim();
     const onderdeel = onderdeelSelect.value.trim();
 
@@ -347,10 +323,8 @@ form.addEventListener('submit', async (event) => {
     const agreeRules = document.getElementById('agreeRules').checked;
     const agreePayment = document.getElementById('agreePayment').checked;
     const captainEmailField = document.getElementById('captainEmail');
-    const ibanField = document.getElementById('iban');
 
     captainEmailField.style.border = '';
-    ibanField.style.border = '';
 
     if (!captainName) {
         toonFout('Vul de naam van de captain in.');
@@ -365,34 +339,6 @@ form.addEventListener('submit', async (event) => {
     if (!isValidEmail(captainEmail)) {
         captainEmailField.style.border = '2px solid red';
         toonFout('Vul een geldig e-mailadres in.', captainEmailField);
-        return;
-    }
-
-    if (!iban) {
-        toonFout('Vul het IBAN nummer in.', ibanField);
-        return;
-    }
-
-    if (!isValidIBAN(iban)) {
-        ibanField.style.border = '2px solid red';
-        toonFout('Het IBAN nummer lijkt niet te kloppen.', ibanField);
-        return;
-    }
-
-    if (!iban.startsWith('NL')) {
-        ibanField.style.border = '2px solid red';
-        toonFout('Alleen Nederlandse IBAN nummers zijn toegestaan.', ibanField);
-        return;
-    }
-
-    if (iban.length !== 18) {
-        ibanField.style.border = '2px solid red';
-        toonFout('Een Nederlands IBAN nummer moet 18 tekens hebben.', ibanField);
-        return;
-    }
-
-    if (!ibanName) {
-        toonFout('Vul de tenaamstelling van de bankrekening in.');
         return;
     }
 
@@ -429,8 +375,6 @@ form.addEventListener('submit', async (event) => {
     const data = {
         captainName: captainName,
         email: captainEmail,
-        iban: iban,
-        ibanName: ibanName,
         sportType: sportType,
         onderdeel: onderdeel,
         players: players.join(', ')
@@ -452,8 +396,6 @@ form.addEventListener('submit', async (event) => {
         summary.innerHTML = `
             <p><strong>Captain:</strong> ${captainName}</p>
             <p><strong>E-mail:</strong> ${captainEmail}</p>
-            <p><strong>IBAN:</strong> ${iban}</p>
-            <p><strong>Tenaamstelling:</strong> ${ibanName}</p>
             <p><strong>Sport:</strong> ${sportType}</p>
             <p><strong>Onderdeel:</strong> ${onderdeel}</p>
             <p><strong>Spelers:</strong> ${players.join(', ')}</p>
