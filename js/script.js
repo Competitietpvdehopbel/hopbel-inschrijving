@@ -393,6 +393,12 @@ form.addEventListener('submit', async (event) => {
             throw new Error('Verzenden mislukt');
         }
 
+        // Het Apps Script geeft ook bij een fout status 200 terug; alleen "OK" betekent echt opgeslagen.
+        const antwoord = (await response.text()).trim();
+        if (antwoord !== 'OK') {
+            throw new Error('Opslaan mislukt: ' + antwoord);
+        }
+
         summary.innerHTML = `
             <p><strong>Captain:</strong> ${captainName}</p>
             <p><strong>E-mail:</strong> ${captainEmail}</p>
